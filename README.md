@@ -25,13 +25,13 @@ Repozytorium zawiera rozwiązania zadań w językach: Python i C#.
 ## Zestaw 2
 
 
---
+---
 
 ## Zestaw 3
 
 
---
+---
 
 ## Zestaw 4
 
---
+---
