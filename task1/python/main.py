@@ -9,8 +9,13 @@ def main():
 
         if choice == '1':
             print("\nZadanie 1: Prosty kalkulator dwóch liczb.")
-            a = float(input("Podaj pierwszą liczbę: "))
-            b = float(input("Podaj drugą liczbę: "))
+            try:
+                a = float(input("Podaj pierwszą liczbę: "))
+                b = float(input("Podaj drugą liczbę: "))
+            except ValueError:
+                print("Nieprawidłowe dane. Musisz podać liczby.")
+                continue
+
             operation = input("Wybierz operację (+, -, *, /): ")
             if operation == '/' and b == 0:
                 print("Nie można dzielić przez zero.")
@@ -39,7 +44,12 @@ def main():
                 print("Nieprawidłowy wybór konwersji.")
                 continue
 
-            temp = float(input("Podaj temperaturę: "))
+            try:
+                temp = float(input("Podaj temperaturę: "))
+            except ValueError:
+                print("Nieprawidłowe dane. Musisz podać liczbę.")
+                continue
+
             if conversion == "c":
                 result = round((temp * 1.8) + 32, 2)
                 print(temp, "°C to", result, "°F")
@@ -50,7 +60,12 @@ def main():
 
         elif choice == '3':
             print("\nZadanie 3: Wyliczanie średniej ocen ucznia.")
-            number_of_grades = int(input("Podaj liczbę ocen: "))
+            try:
+                number_of_grades = int(input("Podaj liczbę ocen: "))
+            except ValueError:
+                print("Nieprawidłowe dane. Musisz podać liczbę całkowitą.")
+                continue
+
             if number_of_grades <= 0:
                 print("Liczba ocen musi być większa od 0.")
                 continue
@@ -58,7 +73,12 @@ def main():
 
             for i in range(number_of_grades):
                 while True:
-                    grade = float(input(f"Podaj ocenę: "))
+                    try:
+                        grade = float(input(f"Podaj ocenę: "))
+                    except ValueError:
+                        print("Nieprawidłowe dane. Musisz podać liczbę.")
+                        continue
+                    
                     if grade >= 1 and grade <= 6:
                         sum_of_grades += grade
                         break
@@ -77,7 +97,7 @@ def main():
             print("Zakończenie programu.")
             break
 
-        
+
         else:
             print("Nieprawidłowy wybór. Wybierz opcję od 1 do 4.")
 
