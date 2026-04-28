@@ -23,8 +23,8 @@ def main():
             else:                
                 print("Nieprawidłowa operacja.")
                 continue
-            print(f"Wynik: {result}")
-            
+            print(f"Wynik: {round(result, 2)}")
+
         elif choice == '2':
             print("\nZadanie 2: Konweter temperatury (Celsjusz <-> Fahrenheit).")
             conversion = input("Wybierz konwersję:"
@@ -37,7 +37,28 @@ def main():
             elif conversion == "f":
                 result = round((temp - 32) / 1.8, 2)
                 print(temp, "°F to", result, "°C")
-        else:
+
+        elif choice == '3':
+            print("\nZadanie 3: Wyliczanie średniej ocen ucznia.")
+            number_of_grades = int(input("Podaj liczbę ocen: "))
+            sum_of_grades = 0
+            for i in range(number_of_grades):
+                grade = float(input(f"Podaj ocenę: "))
+                if grade >= 1 and grade <= 6:
+                    sum_of_grades += grade
+                else:
+                    print("Nieprawidłowa ocena. Podaj ocenę od 1 do 6.")
+                    continue
+            average = sum_of_grades / number_of_grades
+            print(f"Średnia: {round(average, 2)}")
+            if (average >= 3.0):
+                print("Uczeń zdał.")
+            else:
+                print("Uczeń nie zdał.")
+        elif choice == '4':
             print("Zakończenie programu.")
             break
+        else:
+            print("Nieprawidłowy wybór. Wybierz opcję od 1 do 4.")
+
 main()
