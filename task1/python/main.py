@@ -34,7 +34,11 @@ def main():
             print("\nZadanie 2: Konweter temperatury (Celsjusz <-> Fahrenheit).")
             conversion = input("Wybierz konwersję:"
                               "\n- napisz c jeżeli chcesz zamienić Celsjusza na Fahrenheita"
-                              "\n- napisz f jeżeli chcesz zamienić Fahrenheita na Celsjusza): ".lower())
+                              "\n- napisz f jeżeli chcesz zamienić Fahrenheita na Celsjusza): ").lower()
+            if conversion != "c" and conversion != "f":
+                print("Nieprawidłowy wybór konwersji.")
+                continue
+
             temp = float(input("Podaj temperaturę: "))
             if conversion == "c":
                 result = round((temp * 1.8) + 32, 2)
@@ -42,6 +46,7 @@ def main():
             elif conversion == "f":
                 result = round((temp - 32) / 1.8, 2)
                 print(temp, "°F to", result, "°C")
+
 
         elif choice == '3':
             print("\nZadanie 3: Wyliczanie średniej ocen ucznia.")
