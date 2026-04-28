@@ -12,6 +12,10 @@ def main():
             a = float(input("Podaj pierwszą liczbę: "))
             b = float(input("Podaj drugą liczbę: "))
             operation = input("Wybierz operację (+, -, *, /): ")
+            if operation == '/' and b == 0:
+                print("Nie można dzielić przez zero.")
+                continue
+
             if operation == '+':
                 result = a + b
             elif operation == '-':
@@ -25,11 +29,12 @@ def main():
                 continue
             print(f"Wynik: {round(result, 2)}")
 
+
         elif choice == '2':
             print("\nZadanie 2: Konweter temperatury (Celsjusz <-> Fahrenheit).")
             conversion = input("Wybierz konwersję:"
                               "\n- napisz c jeżeli chcesz zamienić Celsjusza na Fahrenheita"
-                              "\n- napisz f jeżeli chcesz zamienić Fahrenheita na Celsjusza): ")
+                              "\n- napisz f jeżeli chcesz zamienić Fahrenheita na Celsjusza): ".lower())
             temp = float(input("Podaj temperaturę: "))
             if conversion == "c":
                 result = round((temp * 1.8) + 32, 2)
