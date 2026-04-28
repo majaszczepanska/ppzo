@@ -9,7 +9,7 @@ namespace Task1
             {
                 Console.WriteLine("\nMenu programu:");
                 Console.WriteLine("1. Prosty kalkulator dwóch liczb");
-                Console.WriteLine("2. Konweter temperatury (Celsjusz <->Fahrenheit)");
+                Console.WriteLine("2. Konweter temperatury (Celsjusz <-> Fahrenheit)");
                 Console.WriteLine("3. Wyliczanie średniej ocen ucznia");
                 Console.WriteLine("4. Zakończ program");
                 Console.Write("Wybierz opcję (1-4): ");
@@ -77,6 +77,41 @@ namespace Task1
                         }
                         break;
                     
+                    case "3":
+                        Console.WriteLine("\nZadanie 3: Wyliczanie średniej ocen ucznia.");
+                        Console.Write("Podaj liczbę ocen: ");
+                        int numberOfGrades = Convert.ToInt32(Console.ReadLine());
+                        double sumOfGrades = 0;
+                        for (int i = 0; i < numberOfGrades; i++)
+                        {
+                            while (true)
+                            {
+                                Console.Write("Podaj ocenę: ");
+                                double grade = Convert.ToDouble(Console.ReadLine());
+                                if (grade >= 1 && grade <= 6)
+                                {
+                                    sumOfGrades += grade;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Nieprawidłowa ocena. Musisz podać liczbę od 1 do 6.");
+                                }
+                            }
+                        }
+                        double average = Math.Round(sumOfGrades / numberOfGrades, 2);
+                        Console.WriteLine($"Średnia: {average}");
+
+                        if (average >= 3.0)
+                        {
+                            Console.WriteLine("Uczeń zdał.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Uczeń nie zdał.");
+                        }
+                        break;
+
                     case "4":
                         Console.WriteLine("Zakończenie programu.");
                         return;
