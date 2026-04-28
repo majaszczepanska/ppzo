@@ -19,10 +19,20 @@ namespace Task1
                 {
                     case "1":
                         Console.WriteLine("\nZadanie 1: Prosty kalkulator dwóch liczb.");
-                        Console.Write("Podaj pierwszą liczbę: ");
-                        double a = Convert.ToDouble(Console.ReadLine());
-                        Console.Write("Podaj drugą liczbę: ");
-                        double b = Convert.ToDouble(Console.ReadLine());
+                        double a = 0, b = 0;
+                        try
+                        {
+                            Console.Write("Podaj pierwszą liczbę: ");
+                            a = Convert.ToDouble(Console.ReadLine());
+                            Console.Write("Podaj drugą liczbę: ");
+                            b = Convert.ToDouble(Console.ReadLine());
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("Nieprawidłowe dane. Musisz podać liczby.");
+                            continue;
+                        }
+
                         Console.Write("Wybierz operację (+, -, *, /): ");
                         string operation = Console.ReadLine();
                         double result = 0;
@@ -63,8 +73,18 @@ namespace Task1
                             Console.WriteLine("Nieprawidłowy wybór konwersji.");
                             continue;
                         }
-                        Console.WriteLine("Podaj temperaturę: ");
-                        double temp = Convert.ToDouble(Console.ReadLine());
+                        
+                        double temp = 0;
+                        try
+                        {
+                            Console.WriteLine("Podaj temperaturę: ");
+                            temp = Convert.ToDouble(Console.ReadLine());
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("Nieprawidłowe dane. Musisz podać liczbę.");
+                            continue;
+                        }
                         if (conversion == "c")
                         {
                             double result2 = Math.Round((temp * 1.8) + 32, 2);
@@ -79,15 +99,35 @@ namespace Task1
                     
                     case "3":
                         Console.WriteLine("\nZadanie 3: Wyliczanie średniej ocen ucznia.");
-                        Console.Write("Podaj liczbę ocen: ");
-                        int numberOfGrades = Convert.ToInt32(Console.ReadLine());
+                        
+                        int numberOfGrades = 0;
+                        try
+                        {
+                            Console.Write("Podaj liczbę ocen: ");
+                            numberOfGrades = Convert.ToInt32(Console.ReadLine());
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("Nieprawidłowe dane. Musisz podać liczbę całkowitą.");
+                            continue;
+                        }
                         double sumOfGrades = 0;
                         for (int i = 0; i < numberOfGrades; i++)
                         {
                             while (true)
                             {
-                                Console.Write("Podaj ocenę: ");
-                                double grade = Convert.ToDouble(Console.ReadLine());
+                                double grade = 0;
+                                try
+                                {
+                                    Console.Write("Podaj ocenę: ");
+                                    grade = Convert.ToDouble(Console.ReadLine());
+                                } 
+                                catch (FormatException)
+                                {
+                                    Console.WriteLine("Nieprawidłowe dane. Musisz podać liczbę.");
+                                    continue;
+                                }
+                                
                                 if (grade >= 1 && grade <= 6)
                                 {
                                     sumOfGrades += grade;
