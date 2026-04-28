@@ -2,7 +2,7 @@ def main():
     while True:
         print("\nMenu programu:")
         print("1. Prosty kalkulator dwóch liczb")
-        print("2. Konweter temperatury (Celsjusz <->Fahrenheit)")
+        print("2. Konweter temperatury (Celsjusz <-> Fahrenheit)")
         print("3. Wyliczanie średniej ocen ucznia")
         print("4. Zakończ program")
         choice = input("Wybierz opcję (1-4): ")
