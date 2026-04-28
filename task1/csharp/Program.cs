@@ -17,6 +17,7 @@ namespace Task1
 
                 switch (choice)
                 {
+                    //Calculator
                     case "1":
                         Console.WriteLine("\nZadanie 1: Prosty kalkulator dwóch liczb.");
                         double a = 0, b = 0;
@@ -36,6 +37,7 @@ namespace Task1
                         Console.Write("Wybierz operację (+, -, *, /): ");
                         string operation = Console.ReadLine();
                         double result = 0;
+                        //Prevent division by zero
                         if (operation == "/" && b == 0)
                         {
                             Console.WriteLine("Nie można dzielić przez zero.");
@@ -62,12 +64,14 @@ namespace Task1
                         Console.WriteLine($"Wynik: {Math.Round(result, 2)}");
                         break;
                         
+                    //Temperature converter
                     case "2":
                         Console.WriteLine("\nZadanie 2: Konweter temperatury (Celsjusz <-> Fahrenheit).");
                         Console.WriteLine("Wybierz konwersję:" +
                               "\n- napisz c jeżeli chcesz zamienić Celsjusza na Fahrenheita" +
                               "\n- napisz f jeżeli chcesz zamienić Fahrenheita na Celsjusza): ");
                         string conversion = Console.ReadLine().ToLower();
+                        //Validate user input (c or f)
                         if (conversion != "c" && conversion != "f")
                         {
                             Console.WriteLine("Nieprawidłowy wybór konwersji.");
@@ -85,6 +89,8 @@ namespace Task1
                             Console.WriteLine("Nieprawidłowe dane. Musisz podać liczbę.");
                             continue;
                         }
+
+                        //Perform conversion
                         if (conversion == "c")
                         {
                             double result2 = Math.Round((temp * 1.8) + 32, 2);
@@ -97,9 +103,9 @@ namespace Task1
                         }
                         break;
                     
+                    //Average grade calculator
                     case "3":
                         Console.WriteLine("\nZadanie 3: Wyliczanie średniej ocen ucznia.");
-                        
                         int numberOfGrades = 0;
                         try
                         {
@@ -114,6 +120,7 @@ namespace Task1
                         double sumOfGrades = 0;
                         for (int i = 0; i < numberOfGrades; i++)
                         {
+                            //Keep asking for grade until user inputs a valid one (between 1 and 6)
                             while (true)
                             {
                                 double grade = 0;
@@ -127,7 +134,7 @@ namespace Task1
                                     Console.WriteLine("Nieprawidłowe dane. Musisz podać liczbę.");
                                     continue;
                                 }
-                                
+                                //Validate grade (1-6)
                                 if (grade >= 1 && grade <= 6)
                                 {
                                     sumOfGrades += grade;
@@ -152,9 +159,11 @@ namespace Task1
                         }
                         break;
 
+                    //Exit program
                     case "4":
                         Console.WriteLine("Zakończenie programu.");
                         return;
+                    //Invalid choice (other than 1-4)
                     default:
                         Console.WriteLine("Nieprawidłowy wybór. Wybierz opcję od 1 do 4.");
                         break; 
