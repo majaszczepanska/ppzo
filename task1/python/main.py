@@ -51,23 +51,33 @@ def main():
         elif choice == '3':
             print("\nZadanie 3: Wyliczanie średniej ocen ucznia.")
             number_of_grades = int(input("Podaj liczbę ocen: "))
+            if number_of_grades <= 0:
+                print("Liczba ocen musi być większa od 0.")
+                continue
             sum_of_grades = 0
+
             for i in range(number_of_grades):
-                grade = float(input(f"Podaj ocenę: "))
-                if grade >= 1 and grade <= 6:
-                    sum_of_grades += grade
-                else:
-                    print("Nieprawidłowa ocena. Podaj ocenę od 1 do 6.")
-                    continue
-            average = sum_of_grades / number_of_grades
-            print(f"Średnia: {round(average, 2)}")
+                while True:
+                    grade = float(input(f"Podaj ocenę: "))
+                    if grade >= 1 and grade <= 6:
+                        sum_of_grades += grade
+                        break
+                    else:
+                        print("Nieprawidłowa ocena. Podaj ocenę od 1 do 6.")
+                
+            average = round(sum_of_grades / number_of_grades, 2)
+            print(f"Średnia: {average}")
             if (average >= 3.0):
                 print("Uczeń zdał.")
             else:
                 print("Uczeń nie zdał.")
+
+
         elif choice == '4':
             print("Zakończenie programu.")
             break
+
+        
         else:
             print("Nieprawidłowy wybór. Wybierz opcję od 1 do 4.")
 
