@@ -52,6 +52,34 @@ namespace Task1
                         Console.WriteLine($"Wynik: {Math.Round(result, 2)}");
                         break;
                         
+                    case "2":
+                        Console.WriteLine("\nZadanie 2: Konweter temperatury (Celsjusz <-> Fahrenheit).");
+                        Console.WriteLine("Wybierz konwersję:" +
+                              "\n- napisz c jeżeli chcesz zamienić Celsjusza na Fahrenheita" +
+                              "\n- napisz f jeżeli chcesz zamienić Fahrenheita na Celsjusza): ");
+                        string conversion = Console.ReadLine().ToLower();
+                        if (conversion != "c" && conversion != "f")
+                        {
+                            Console.WriteLine("Nieprawidłowy wybór konwersji.");
+                            continue;
+                        }
+                        Console.WriteLine("Podaj temperaturę: ");
+                        double temp = Convert.ToDouble(Console.ReadLine());
+                        if (conversion == "c")
+                        {
+                            double result2 = Math.Round((temp * 1.8) + 32, 2);
+                            Console.WriteLine($"{temp}°C = {result2}°F");
+                        }
+                        else
+                        {
+                            double result2 = Math.Round((temp - 32) / 1.8, 2);
+                            Console.WriteLine($"{temp}°F = {result2}°C");
+                        }
+                        break;
+                    
+                    case "4":
+                        Console.WriteLine("Zakończenie programu.");
+                        return;
                     default:
                         Console.WriteLine("Nieprawidłowy wybór. Wybierz opcję od 1 do 4.");
                         break; 
