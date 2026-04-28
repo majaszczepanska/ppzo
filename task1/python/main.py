@@ -1,22 +1,43 @@
 def main():
     while True:
-        
-        print("\nZadanie 1: Prosty kalkulator dwóch liczb.")
-        a = float(input("Podaj pierwszą liczbę: "))
-        b = float(input("Podaj drugą liczbę: "))
-        operation = input("Wybierz operację (+, -, *, /): ")
-        if operation == '+':
-            result = a + b
-        elif operation == '-':
-            result = a - b
-        elif operation == '*':  
-            result = a * b
-        elif operation == '/':
-            result = a / b
-        else:                
-            print("Nieprawidłowa operacja.")
-            continue
-        print(f"Wynik: {result}")
+        print("\nMenu programu:")
+        print("1. Prosty kalkulator dwóch liczb")
+        print("2. Konweter temperatury (Celsjusz <->Fahrenheit)")
+        print("3. Wyliczanie średniej ocen ucznia")
+        print("4. Zakończ program")
+        choice = input("Wybierz opcję (1-4): ")
+
+        if choice == '1':
+            print("\nZadanie 1: Prosty kalkulator dwóch liczb.")
+            a = float(input("Podaj pierwszą liczbę: "))
+            b = float(input("Podaj drugą liczbę: "))
+            operation = input("Wybierz operację (+, -, *, /): ")
+            if operation == '+':
+                result = a + b
+            elif operation == '-':
+                result = a - b
+            elif operation == '*':  
+                result = a * b
+            elif operation == '/':
+                result = a / b
+            else:                
+                print("Nieprawidłowa operacja.")
+                continue
+            print(f"Wynik: {result}")
             
-        
+        elif choice == '2':
+            print("\nZadanie 2: Konweter temperatury (Celsjusz <-> Fahrenheit).")
+            conversion = input("Wybierz konwersję:"
+                              "\n- napisz c jeżeli chcesz zamienić Celsjusza na Fahrenheita"
+                              "\n- napisz f jeżeli chcesz zamienić Fahrenheita na Celsjusza): ")
+            temp = float(input("Podaj temperaturę: "))
+            if conversion == "c":
+                result = round((temp * 1.8) + 32, 2)
+                print(temp, "°C to", result, "°F")
+            elif conversion == "f":
+                result = round((temp - 32) / 1.8, 2)
+                print(temp, "°F to", result, "°C")
+        else:
+            print("Zakończenie programu.")
+            break
 main()
