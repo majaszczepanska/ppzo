@@ -35,7 +35,7 @@ public abstract class Piece
     public abstract bool CheckMove(int newX, int newY);
 }
 
-// --- FIGURES ---
+// --- PIECES ---
 public class Pawn : Piece
 {
     public Pawn(string color, int x, int y) : base("Pawn", color, x, y) { }
@@ -113,5 +113,73 @@ public class King : Piece
         int dx = Math.Abs(newX - X);
         int dy = Math.Abs(newY - Y);
         return dx <= 1 && dy <= 1 && (dx > 0 || dy > 0);
+    }
+}
+
+// --- BOARD ---
+public class Board
+{
+    private List<Piece> pieces = new List<Piece>();
+
+    public void AddPiece(Piece piece)
+    {
+        pieces.Add(piece);
+    }
+
+    public void DisplayStatus()
+    {
+        Console.WriteLine("Aktualna pozycja figur:");
+        foreach (var piece in pieces)
+        {
+            Console.WriteLine($"{piece.Name} ({piece.Color}) - pozycja: ({piece.X}, {piece.Y})");
+        }
+        Console.WriteLine("-------------------------------");
+    }
+
+    public void MovePiece(Piece piece, int newX, int newY)
+    {
+        Console.WriteLine($"Próba przesunięcia {piece.Name} ({piece.Color}) z ({piece.X}, {piece.Y}) na ({newX}, {newY})");
+        if (MoveValidator.IsMoveValid(piece, newX, newY))
+        {
+            Console.WriteLine("Status: Ruch jest prawidłowy.");
+            piece.X = newX;
+            piece.Y = newY;
+        }
+        else
+        {
+            Console.WriteLine("Status: BŁĄD! Ruch jest nieprawidłowy.");
+        }
+    }
+
+    public bool IsInCheck(string color)
+    {
+        Piece king = pieces.Find(p => p is King && p.Color == color);
+        if (king == null) return false;
+
+        foreach (var piece in pieces)
+        {
+            if (piece.Color != color)
+            {
+                if (piece.CheckMove(king.X, king.Y)) return true;
+            }
+        }
+        return false;
+    }
+
+    public void CheckGameState()
+    {
+        Console.WriteLine("Sprawdzanie stanu gry...");
+        if (IsInCheck("white"))
+        {
+            Console.WriteLine("UWAGA: Biały król jest w szachu!");
+        }
+        else if (IsInCheck("black"))
+        {
+            Console.WriteLine("UWAGA: Czarny król jest w szachu!");
+        }
+        else
+        {
+            Console.WriteLine("Jest dobrze, brak szachów.");
+        }
     }
 }
