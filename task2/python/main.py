@@ -1,3 +1,33 @@
+import sqlite3
+
+# Extra: Database logging for valid moves, at the end of the game - read the chess.db file to show logged moves
+def init_db(db_path="chess.db"):
+    """Initializes the SQLite database and creates the necessary table for logging moves."""
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    # Create a table to log valid moves
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS moves (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            piece_name TEXT NOT NULL,
+            color TEXT NOT NULL,
+            to_x INTEGER NOT NULL,
+            to_y INTEGER NOT NULL
+        )
+    """)
+    conn.commit()
+    return conn
+
+def log_move_to_db(conn, piece, x, y):
+    """Logs a valid move to the database."""
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO moves (piece_name, color, to_x, to_y) VALUES (?, ?, ?, ?)",
+        (piece.name, piece.color, x, y)
+    )
+    conn.commit()
+
+
 class Player:
     def __init__(self, name: str, color: str):
         self.name = name
@@ -93,8 +123,9 @@ class MoveValidator:
     
 # --- BOARD ---
 class Board:
-    def __init__(self):
+    def __init__(self, db_conn=None):
         self.pieces = []
+        self.db_conn = db_conn
 
     def add_piece(self, piece: Piece):
         self.pieces.append(piece)
@@ -109,13 +140,14 @@ class Board:
     def move_piece(self, piece: Piece, new_x: int, new_y: int) -> bool:
         print(f"Próba przesunięcia {piece.name} ({piece.color}) z ({piece.x}, {piece.y}) na ({new_x}, {new_y})")
         if MoveValidator.is_move_valid(piece, new_x, new_y):
-            print("Ruch jest prawidłowy.")
+            print("Status: Ruch jest prawidłowy.")
             piece.x = new_x
             piece.y = new_y
-            return True
+            if self.db_conn:
+                log_move_to_db(self.db_conn, piece, new_x, new_y)
+                print("Zapisano log ruchu w bazie danych (SQLite).")
         else:
-            print("Ruch jest nieprawidłowy.")
-            return False
+            print("Status: BŁĄD! Ruch jest nieprawidłowy.")
     
     # Check if the king of the given color is in check
     def is_in_check(self, color: str) -> bool:
@@ -142,10 +174,13 @@ class Board:
             print("Jest dobrze, brak szachów.")
     
 if __name__ == "__main__":
+    # Initialize the database connection
+    conn = init_db("chess.db")
+    
     # 1. Creating players and board
     player1 = Player("Jan", "white")
     player2 = Player("Anna", "black")
-    board = Board()
+    board = Board(db_conn=conn)
 
     # 2. Creating pieces for both players
     white_king = King("white", 4, 0)
@@ -185,3 +220,11 @@ if __name__ == "__main__":
     
     # Check game state after the escape - check should be cleared
     board.check_game_state()
+
+    # Display final status of the board - read chess.db file to show logged moves
+    print("\n--- ZAWARTOŚĆ BAZY DANYCH ---")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM moves")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
