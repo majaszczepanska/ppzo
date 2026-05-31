@@ -28,12 +28,12 @@ Repozytorium zawiera rozwiązania zadań w językach: Python i C#.
 * **Python:** `task2/python/main.py`
 * **C#:** `task2/csharp/Program.cs`
 
-**Zrealizowany projekt (Model Szachownicy):**
-Implementacja uproszczonej gry w szachy, nastawiona na demonstrację paradygmatów programowania obiektowego (OOP).
-* **Klasy i Dziedziczenie:** Stworzenie klasy bazowej `Piece` oraz klas po niej dziedziczących (`Pawn`, `Rook`, `Knight`, `Bishop`, `Queen`, `King`). Każda figura posiada własną logikę poruszania się.
-* **Walidacja ruchu:** Klasa `MoveValidator` sprawdzająca, czy ruch jest zgodny z zasadami danej figury i czy nie wykracza poza planszę 8x8.
-* **Stan gry:** Detekcja sytuacji, w której jakikolwiek Król znajduje się w szachu.
-* **Zapis danych (Bonus):** Integracja z lokalną bazą danych **SQLite** (`chess.db`). Zapisywanie historii poprawnych ruchów z poziomu kodu (przy użyciu modułu `sqlite3` w Pythonie oraz `Microsoft.Data.Sqlite` w C#).
+**Zrealizowany projekt (Gra Strategia turowa – model szachów):**
+W pełni zorientowana obiektowo (OOP) implementacja uproszczonej logiki gry w szachy.
+* **Klasy i Dziedziczenie:** Stworzenie klasy bazowej `Piece` oraz podklas dla poszczególnych figur (`Pawn`, `Rook`, `Knight`, `Bishop`, `Queen`, `King`). Każda z nich hermetyzuje własną logikę dopuszczalnych ruchów.
+* **Logika gry (Board i MoveValidator):** Klasy odpowiedzialne za zarządzanie stanem planszy (`Player`, `Board`), walidację współrzędnych (plansza 8x8) oraz weryfikację zasad ruchu.
+* **Bicie i Szach:** Mechanizm usuwania z planszy figur przeciwnika (bicie) w przypadku prawidłowego ataku, oraz sprawdzanie stanu zagrożenia Króla w danej turze (szach).
+* **Zapis danych (Bonus SQLite):** Trwały zapis logów (historii poprawnych ruchów) do lokalnej bazy danych `chess.db` przy użyciu wbudowanego modułu `sqlite3` (Python) oraz pakietu `Microsoft.Data.Sqlite` (C#).
 
 ---
 
