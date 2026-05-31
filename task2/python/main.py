@@ -82,3 +82,38 @@ class King(Piece):
         dx = abs(new_x - self.x)
         dy = abs(new_y - self.y)
         return dx <= 1 and dy <= 1 and (dx > 0 or dy > 0)
+    
+
+class MoveValidator:
+    @staticmethod
+    def is_move_valid(piece: Piece, new_x: int, new_y: int) -> bool:
+        if new_x < 0 or new_x > 7 or new_y < 0 or new_y > 7:
+            return False
+        return piece.check_move(new_x, new_y)
+    
+class Board:
+    def __init__(self):
+        self.pieces = []
+
+    def add_piece(self, piece: Piece):
+        self.pieces.append(piece)
+    
+    def display_status(self):
+        print("Aktualna pozycja figur:")
+        for piece in self.pieces:
+            print(f"{piece.name} ({piece.color}) - pozycja: ({piece.x}, {piece.y})")
+        print("-------------------------------")
+
+    def move_piece(self, piece: Piece, new_x: int, new_y: int) -> bool:
+        print(f"Próba przesunięcia {piece.name} ({piece.color}) z ({piece.x}, {piece.y}) na ({new_x}, {new_y})")
+        if MoveValidator.is_move_valid(piece, new_x, new_y):
+            print("Ruch jest prawidłowy.")
+            piece.x = new_x
+            piece.y = new_y
+            return True
+        else:
+            print("Ruch jest nieprawidłowy.")
+            return False
+    
+    def check_game_state(self):
+        print("Stan gry: brak szachów, brak mata, brak patu.")
