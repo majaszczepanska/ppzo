@@ -239,7 +239,7 @@ if __name__ == "__main__":
     # VALID MOVE: Black Rook moves under the White King
     board.move_piece(black_rook, 4, 0)
 
-    # VALID CAPTURE (BICIE): White King captures the Black Rook!
+    # VALID CAPTURE: White King captures the Black Rook!
     board.move_piece(white_king, 4, 0)
     board.display_status()
 
