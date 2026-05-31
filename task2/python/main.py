@@ -140,6 +140,21 @@ class Board:
     def move_piece(self, piece: Piece, new_x: int, new_y: int) -> bool:
         print(f"Próba przesunięcia {piece.name} ({piece.color}) z ({piece.x}, {piece.y}) na ({new_x}, {new_y})")
         if MoveValidator.is_move_valid(piece, new_x, new_y):
+            # add logic for capturing pieces
+            target_piece = None
+            for p in self.pieces:
+                if p.x == new_x and p.y == new_y:
+                    target_piece = p
+                    break
+            
+            if target_piece:
+                if target_piece.color == piece.color:
+                    print("Status: BŁĄD! Nie możesz stanąć na polu zajętym przez własną figurę.")
+                    return False
+                else:
+                    print(f"Status: BICIE! Figura {target_piece.name} ({target_piece.color}) została usunięta z planszy.")
+                    self.pieces.remove(target_piece)
+
             print("Status: Ruch jest prawidłowy.")
             piece.x = new_x
             piece.y = new_y
@@ -220,6 +235,13 @@ if __name__ == "__main__":
     
     # Check game state after the escape - check should be cleared
     board.check_game_state()
+
+    # VALID MOVE: Black Rook moves under the White King
+    board.move_piece(black_rook, 4, 0)
+
+    # VALID CAPTURE (BICIE): White King captures the Black Rook!
+    board.move_piece(white_king, 4, 0)
+    board.display_status()
 
     # Display final status of the board - read chess.db file to show logged moves
     print("\n--- ZAWARTOŚĆ BAZY DANYCH ---")
