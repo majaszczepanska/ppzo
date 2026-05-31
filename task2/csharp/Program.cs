@@ -201,6 +201,11 @@ public class Board
             Console.WriteLine("Status: Ruch jest prawidłowy.");
             piece.X = newX;
             piece.Y = newY;
+            if (dbLogger != null)
+            {
+                dbLogger.LogMove(piece, newX, newY);
+                Console.WriteLine("Zapisano log ruchu w bazie danych (SQLite).");
+            }
         }
         else
         {
