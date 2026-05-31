@@ -14,6 +14,7 @@ class Piece:
         #logic will be implemented in child classes
         pass
 
+
 class Pawn(Piece):
     def __init__(self, color: str, x: int, y: int):
         super().__init__("Pawn", color, x, y)
@@ -32,29 +33,52 @@ class Pawn(Piece):
         else:
             return False
         
+
 class Rook(Piece):
     def __init__(self, color: str, x: int, y: int):
         super().__init__("Rook", color, x, y)
     
     def check_move(self, new_x: int, new_y: int) -> bool:
-        return (new_x == self.x and new_y != self.y) or (new_x != self.x and new_y == self.y)
+        dx = abs(new_x - self.x)
+        dy = abs(new_y - self.y)
+        return (dx == 0 and dy != 0) or (dx != 0 and dy == 0)
     
+
 class Knight(Piece):
     def __init__(self, color: str, x: int, y: int):
         super().__init__("Knight", color, x, y)
+    
+    def check_move(self, new_x: int, new_y: int) -> bool:
+        dx = abs(new_x - self.x)
+        dy = abs(new_y - self.y)
+        return (dx == 2 and dy == 1) or (dx == 1 and dy == 2)
 
-   
+
 class Bishop(Piece):
     def __init__(self, color: str, x: int, y: int):
         super().__init__("Bishop", color, x, y)
+
+    def check_move(self, new_x: int, new_y: int) -> bool:
+        dx = abs(new_x - self.x)
+        dy = abs(new_y - self.y)
+        return dx == dy and dx > 0
 
 
 class Queen(Piece):
     def __init__(self, color: str, x: int, y: int):
         super().__init__("Queen", color, x, y)
 
+    def check_move(self, new_x: int, new_y: int) -> bool:
+        dx = abs(new_x - self.x)
+        dy = abs(new_y - self.y)
+        return (dx == 0 and dy > 0) or (dx > 0 and dy == 0) or (dx == dy and dx > 0)
+
+
 class King(Piece):
     def __init__(self, color: str, x: int, y: int):
         super().__init__("King", color, x, y)
 
-        
+    def check_move(self, new_x: int, new_y: int) -> bool:
+        dx = abs(new_x - self.x)
+        dy = abs(new_y - self.y)
+        return dx <= 1 and dy <= 1 and (dx > 0 or dy > 0)
