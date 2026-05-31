@@ -195,3 +195,53 @@ public class MoveValidator
         return piece.CheckMove(newX, newY);
     }
 }
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // 1. Creating players and board
+        Player player1 = new Player("Jan", "white");
+        Player player2 = new Player("Anna", "black");
+        Board board = new Board();
+
+        // 2. Creating pieces for both players
+        Piece whiteKing = new King("white", 4, 0);
+        Piece whitePawn = new Pawn("white", 4, 1);
+        Piece blackRook = new Rook("black", 0, 7);
+        Piece blackBishop = new Bishop("black", 2, 7);
+
+        // 3. Adding pieces to the board
+        board.AddPiece(whiteKing);
+        board.AddPiece(whitePawn);
+        board.AddPiece(blackRook);
+        board.AddPiece(blackBishop);
+
+        // 4. Initial state
+        board.DisplayStatus();
+        board.CheckGameState();
+
+        // --- MOVE SEQUENCE ---
+
+        // VALID: Pawn moves 2 squares forward from the start
+        board.MovePiece(whitePawn, 4, 3);
+
+        // INVALID: Rook tries to move diagonally
+        board.MovePiece(blackRook, 1, 6);
+
+        // INVALID: Rook tries to move out of bounds (y=8)
+        board.MovePiece(blackRook, 0, 8);
+
+        // VALID ATTACK: Rook moves in a straight line to the white King's row (y=0)
+        board.MovePiece(blackRook, 0, 0);
+
+        // Check game state - should result in a CHECK!
+        board.CheckGameState();
+
+        // VALID DEFENSIVE MOVE: King escapes
+        board.MovePiece(whiteKing, 4, 1);
+
+        // Check game state after escape - check disappears
+        board.CheckGameState();
+    }
+}
