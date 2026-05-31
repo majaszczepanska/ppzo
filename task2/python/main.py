@@ -14,7 +14,7 @@ class Piece:
         #logic will be implemented in child classes
         pass
 
-
+# --- FIGURES ---
 class Pawn(Piece):
     def __init__(self, color: str, x: int, y: int):
         super().__init__("Pawn", color, x, y)
@@ -83,7 +83,7 @@ class King(Piece):
         dy = abs(new_y - self.y)
         return dx <= 1 and dy <= 1 and (dx > 0 or dy > 0)
     
-
+# --- GAME LOGIC ---
 class MoveValidator:
     @staticmethod
     def is_move_valid(piece: Piece, new_x: int, new_y: int) -> bool:
@@ -91,6 +91,7 @@ class MoveValidator:
             return False
         return piece.check_move(new_x, new_y)
     
+# --- BOARD ---
 class Board:
     def __init__(self):
         self.pieces = []
@@ -104,6 +105,7 @@ class Board:
             print(f"{piece.name} ({piece.color}) - pozycja: ({piece.x}, {piece.y})")
         print("-------------------------------")
 
+    # Move a piece if the move is valid
     def move_piece(self, piece: Piece, new_x: int, new_y: int) -> bool:
         print(f"Próba przesunięcia {piece.name} ({piece.color}) z ({piece.x}, {piece.y}) na ({new_x}, {new_y})")
         if MoveValidator.is_move_valid(piece, new_x, new_y):
@@ -115,6 +117,7 @@ class Board:
             print("Ruch jest nieprawidłowy.")
             return False
     
+    # Check if the king of the given color is in check
     def is_in_check(self, color: str) -> bool:
         king = None
         for piece in self.pieces:
