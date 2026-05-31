@@ -1,5 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Data.Sqlite;
+
+// --- DATABASE LOGGING ---
+// Extra: Database logging for valid moves, at the end of the game - read the chess.db file to show logged moves
+public class DbLogger
+{
+    private SqliteConnection _conn;
+
+    public DbLogger(string dbPath = "Data Source=chess.db")
+    {
+        _conn = new SqliteConnection(dbPath);
+        _conn.Open();
+        var cmd = _conn.CreateCommand();
+        // Create a table to log valid moves
+        cmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS moves (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                piece_name TEXT NOT NULL,
+                color TEXT NOT NULL,
+                to_x INTEGER NOT NULL,
+                to_y INTEGER NOT NULL
+            )";
+        cmd.ExecuteNonQuery();
+    }
+
+    public void LogMove(Piece piece, int x, int y)
+    {
+        var cmd = _conn.CreateCommand();
+        cmd.CommandText = "INSERT INTO moves (piece_name, color, to_x, to_y) VALUES ($name, $color, $x, $y)";
+        cmd.Parameters.AddWithValue("$name", piece.Name);
+        cmd.Parameters.AddWithValue("$color", piece.Color);
+        cmd.Parameters.AddWithValue("$x", x);
+        cmd.Parameters.AddWithValue("$y", y);
+        cmd.ExecuteNonQuery();
+    }
+
+    public void PrintLogs()
+    {
+        Console.WriteLine("\n--- ZAWARTOŚĆ BAZY DANYCH ---");
+        var cmd = _conn.CreateCommand();
+        cmd.CommandText = "SELECT * FROM moves";
+        using (var reader = cmd.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                // Reading data from columns: id, piece_name, color, to_x, to_y
+                Console.WriteLine($"({reader.GetInt32(0)}) {reader.GetString(1)} ({reader.GetString(2)}) -> X: {reader.GetInt32(3)}, Y: {reader.GetInt32(4)}");
+            }
+        }
+    }
+}
 
 
 // --- CORE CLASSES ---
@@ -120,6 +171,12 @@ public class King : Piece
 public class Board
 {
     private List<Piece> pieces = new List<Piece>();
+    private DbLogger dbLogger;
+
+    public Board(DbLogger logger = null)
+    {
+        dbLogger = logger;
+    }
 
     public void AddPiece(Piece piece)
     {
@@ -200,10 +257,13 @@ class Program
 {
     static void Main(string[] args)
     {
+        // Initialize the database connection
+        DbLogger dbLogger = new DbLogger();
+
         // 1. Creating players and board
         Player player1 = new Player("Jan", "white");
         Player player2 = new Player("Anna", "black");
-        Board board = new Board();
+        Board board = new Board(logger: dbLogger);
 
         // 2. Creating pieces for both players
         Piece whiteKing = new King("white", 4, 0);
@@ -221,7 +281,7 @@ class Program
         board.DisplayStatus();
         board.CheckGameState();
 
-        // --- MOVE SEQUENCE ---
+        //  --- Sequence of Moves ---
 
         // VALID: Pawn moves 2 squares forward from the start
         board.MovePiece(whitePawn, 4, 3);
@@ -243,5 +303,8 @@ class Program
 
         // Check game state after escape - check disappears
         board.CheckGameState();
+
+        // Display final status of the board - read chess.db file to show logged moves
+        dbLogger.PrintLogs();
     }
 }
