@@ -66,7 +66,7 @@ public class Player
     }
 }
 
-// --- PIECES ---
+// --- ABSTRACT CLASS FOR PIECES ---
 public abstract class Piece
 {
     public string Name { get; }
@@ -91,6 +91,7 @@ public class Pawn : Piece
 {
     public Pawn(string color, int x, int y) : base("Pawn", color, x, y) { }
 
+    // Pawns can move forward 1 square, or 2 squares from their starting position
     public override bool CheckMove(int newX, int newY)
     {
         if (Color == "white")
@@ -193,6 +194,7 @@ public class Board
         Console.WriteLine("-------------------------------");
     }
 
+    // Method to move a piece, with validation and logging
     public void MovePiece(Piece piece, int newX, int newY)
     {
         Console.WriteLine($"Próba przesunięcia {piece.Name} ({piece.Color}) z ({piece.X}, {piece.Y}) na ({newX}, {newY})");
@@ -213,6 +215,7 @@ public class Board
         }
     }
 
+    // check if the king of the given color is in check
     public bool IsInCheck(string color)
     {
         Piece king = pieces.Find(p => p is King && p.Color == color);
