@@ -115,5 +115,25 @@ class Board:
             print("Ruch jest nieprawidłowy.")
             return False
     
+    def is_in_check(self, color: str) -> bool:
+        king = None
+        for piece in self.pieces:
+            if isinstance(piece, King) and piece.color == color:
+                king = piece
+                break
+        if not king:
+            return False
+        for piece in self.pieces:
+            if piece.color != color:
+                if piece.check_move(king.x, king.y):
+                    return True
+        return False
+
     def check_game_state(self):
-        print("Stan gry: brak szachów, brak mata, brak patu.")
+        print("Sprawdzanie stanu gry...")
+        if self.is_in_check("white"):
+            print("UWAGA: Biały król jest w szachu!")
+        if self.is_in_check("black"):
+            print("UWAGA: Czarny król jest w szachu!")
+        else:
+            print("Okej, brak szachów.")
