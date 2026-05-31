@@ -183,3 +183,15 @@ public class Board
         }
     }
 }
+
+public class MoveValidator
+{
+    public static bool IsMoveValid(Piece piece, int newX, int newY)
+    {
+        //check if the new position is within the board limits (0-7)
+        if (newX < 0 || newX > 7 || newY < 0 || newY > 7) return false;
+        
+        // check if the move is valid for the piece type
+        return piece.CheckMove(newX, newY);
+    }
+}
