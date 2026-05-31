@@ -200,9 +200,27 @@ public class Board
         Console.WriteLine($"Próba przesunięcia {piece.Name} ({piece.Color}) z ({piece.X}, {piece.Y}) na ({newX}, {newY})");
         if (MoveValidator.IsMoveValid(piece, newX, newY))
         {
+            // add kill logic
+            Piece targetPiece = pieces.Find(p => p.X == newX && p.Y == newY);
+            
+            if (targetPiece != null)
+            {
+                if (targetPiece.Color == piece.Color)
+                {
+                    Console.WriteLine("Status: BŁĄD! Nie możesz stanąć na polu zajętym przez własną figurę.");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine($"Status: BICIE! Figura {targetPiece.Name} ({targetPiece.Color}) została usunięta z planszy.");
+                    pieces.Remove(targetPiece); 
+                }
+            }
             Console.WriteLine("Status: Ruch jest prawidłowy.");
             piece.X = newX;
             piece.Y = newY;
+
+            //log the move in the database
             if (dbLogger != null)
             {
                 dbLogger.LogMove(piece, newX, newY);
@@ -308,6 +326,13 @@ class Program
 
         // VALID DEFENSIVE MOVE: King escapes
         board.MovePiece(whiteKing, 4, 1);
+
+        // VALID MOVE: Black Rook moves under the White King
+        board.MovePiece(blackRook, 4, 0);
+
+        // VALID CAPTURE: White King captures the Black Rook!
+        board.MovePiece(whiteKing, 4, 0);
+        board.DisplayStatus();
 
         // Check game state after escape - check disappears
         board.CheckGameState();
