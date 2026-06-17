@@ -14,7 +14,7 @@ public class Shelter {
         availableAnimals.add(animal);
         System.out.println("Added to shelter: " + animal.getName());
     }
-    
+
     public void removeAnimal(Animal animal) {
         availableAnimals.remove(animal);
     }
@@ -28,8 +28,8 @@ public class Shelter {
             System.out.println("The shelter is empty.");
             return;
         }
+        // Polymorphism: JVM is deciding at runtime which interact() method to call based on the actual object type (Dog or Cat)
         for (Animal animal : availableAnimals) {
-            // Polymorphic method call
             animal.interact(); 
         }
         System.out.println("------------------------------\n");
