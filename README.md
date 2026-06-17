@@ -38,35 +38,52 @@ W pełni zorientowana obiektowo (OOP) implementacja uproszczonej logiki gry w sz
 ---
 
 ## Zestaw 3
-# Projekt: System Zarządzania Wirtualnym Schroniskiem
+# Projekt: System Zarządzania Schroniskiem
 
 ## 1. Opis tematu aplikacji
-Aplikacja jest modelem systemu zarządzania wirtualnym schroniskiem dla zwierząt. Jej głównym celem jest ewidencja podopiecznych (psów i kotów), rejestracja osób chętnych do adopcji oraz bezpieczne i logiczne procesowanie samego aktu adopcji. Temat ten idealnie nadaje się do demonstracji zasad OOP, ponieważ naturalnie wymusza mapowanie obiektów świata rzeczywistego na struktury danych i relacje w kodzie.
+Aplikacja jest modelem systemu zarządzania wirtualnym schroniskiem dla zwierząt. Głównym celem jest ewidencja zwierząt (psów i kotów), rejestracja osób chętnych do adopcji oraz bezpieczne procesowanie aktu adopcji. System demonstruje mapowanie obiektów świata rzeczywistego na struktury danych.
 
-## 2. Lista klas i ich odpowiedzialność (Single Responsibility Principle)
-Aby uniknąć tworzenia "Boskiej Klasy" (zgodnie z zasadą SRP), system został podzielony na wyspecjalizowane obiekty:
-* **Animal (Klasa abstrakcyjna)** – Wzorzec określający podstawowy stan i kontrakt dla każdego zwierzęcia. Odpowiada za przechowywanie danych (id, wiek, status adopcji).
-* **Dog / Cat (Klasy pochodne)** – Reprezentują konkretne gatunki. Ich wyłączną odpowiedzialnością jest definiowanie unikalnych zachowań (implementacja metody interact()).
-* **Adopter** – Reprezentuje klienta. Przechowuje jego dane oraz historię zaadoptowanych zwierząt.
-* **Shelter** – Klasa-kolekcja zarządzająca stanem schroniska (dostępnymi zwierzętami) oraz posiadająca metody do dodawania i wyświetlania zwierząt.
-* **AdoptionRecord (Klasa asocjacyjna)** – Odpowiada wyłącznie za logikę powiązania Adopter z Animal w procesie adopcji oraz zapisanie daty tego zdarzenia.
-* **Playable (Interfejs)** – Dodatkowy kontrakt definiujący abstrakcyjną metodę play().
+## 2. Lista klas i ich odpowiedzialność
+Zgodnie z zasadą Single Responsibility Principle (SRP):
+* **Animal (Klasa abstrakcyjna)** – Główny kontrakt dla zwierząt. Przechowuje stan (id, name, age, isAdopted).
+* **Dog / Cat (Klasy pochodne)** – Implementują unikalne zachowania (`interact()`, `play()`).
+* **Adopter** – Przechowuje dane adoptującego oraz listę jego zwierzaków.
+* **Shelter** – Odpowiada za zarządzanie listą `availableAnimals`.
+* **AdoptionRecord** – Klasa asocjacyjna realizująca logikę biznesową adopcji (łączy `Adopter` z `Animal`).
+* **Playable (Interfejs)** – Definiuje kontrakt dla zwierząt zdolnych do zabawy.
 
-## 3. Relacje między klasami w systemie
-Projekt demonstruje różnorodne połączenia obiektów omawiane w kursie:
-1. **Agregacja (Relacja "ma", ale niezależna):** Shelter posiada kolekcję obiektów Animal (List<Animal>). Zwierzęta mogą istnieć niezależnie od schroniska (np. po adopcji).
-2. **Kompozycja z perspektywy domeny:** Adopter posiada własną listę zaadoptowanych zwierząt.
-3. **Przekazanie obiektu jako parametr metody:** Konstruktor w klasie AdoptionRecord przyjmuje jako parametry obiekty typu Animal oraz Adopter, łącząc je ze sobą.
-4. **Identyfikatory (ID):** Klasy główne (Animal, Adopter) nie polegają wyłącznie na referencjach w pamięci, ale posiadają unikalne UUID imitujące klucze główne z bazy danych.
+## 3. Relacje między klasami
+* **Agregacja:** `Shelter` posiada `List<Animal>`. Schronisko przechowuje zwierzęta, ale zwierzę może istnieć poza schroniskiem.
+* **Kompozycja:** `Adopter` posiada `List<Animal>`. Adoptowane zwierzęta stają się "częścią" inwentarza adoptującego.
+* **Parametry metod:** Metoda `processAdoption` w klasie `AdoptionRecord` przyjmuje `(Animal animal, Adopter adopter)`, co realizuje przekazanie zależności (Dependency Injection).
+* **Identyfikatory:** Każdy obiekt `Animal` i `Adopter` posiada unikalny `UUID`, co symuluje klucz główny bazy danych.
 
-## 4. Realizacja czterech zasad OOP w praktyce
-1. **Enkapsulacja:** Pola we wszystkich klasach są ukryte (private). Nie można z zewnątrz przypadkowo zmienić statusu adopcji zwierzęcia. Odbywa się to w kontrolowany sposób wyłącznie poprzez specjalną metodę adopt(). Zastosowano również gettery, blokując bezpośredni dostęp do stanu obiektów.
-2. **Abstrakcja:** Ukryto szczegóły implementacji, tworząc klasę abstrakcyjną Animal z abstrakcyjną metodą interact(). Dodatkowo, system określa kontrakt zachowania poprzez interfejs Playable.
-3. **Dziedziczenie:** Klasy szczegółowe Dog i Cat dziedziczą (extends) po klasie ogólnej Animal, co realizuje poprawną relację "jest rodzajem" (IS-A).
-4. **Polimorfizm:** Mimo że klasa Shelter przechowuje listę ogólnego typu Animal, pętla wywołująca metodę interact() skutkuje różnym zachowaniem. Maszyna wirtualna Javy dynamicznie decyduje, czy wywołać szczekanie psa, czy mruczenie kota. Polimorfizm wykorzystano również przy implementacji interfejsu Playable.
+## 4. Realizacja zasad OOP – wskazanie implementacji
+Gdzie w kodzie znajdują się konkretne zasady OOP:
 
-## 5. Wykorzystanie narzędzi AI (Generative AI Disclosure)
-Zgodnie z wytycznymi, oświadczam, że podczas tworzenia projektu wspomagałam się modelami AI. Sztuczna inteligencja posłużyła mi w procesie burzy mózgów przy doborze tematu, upewnieniu się co do poprawności implementacji interfejsów w Javie oraz do sformatowania opisów relacji w pliku README. Cała struktura logiczna, zasady powiązań i odpowiedzialność za poprawność kodu leży po mojej stronie.
+### Enkapsulacja
+* **Gdzie:** Wszystkie pola (np. `private String id`, `private List<Animal> availableAnimals`) są prywatne.
+* **Uzasadnienie:** Dostęp do danych odbywa się tylko przez publiczne metody (`getName()`, `adopt()`). Status `isAdopted` nie może zostać zmieniony z zewnątrz bez wywołania metody `adopt()`, co chroni integralność stanu obiektu.
+
+### Abstrakcja
+* **Gdzie:** Klasa abstrakcyjna `Animal` oraz interfejs `Playable`.
+* **Uzasadnienie:** Klasa `Animal` posiada metodę `public abstract void interact()`. Nie definiujemy w niej *jak* zwierzę interaguje, tylko *że musi* to robić. Interfejs `Playable` wymusza na klasach `Dog` i `Cat` posiadanie metody `play()`.
+
+### Dziedziczenie
+* **Gdzie:** `public class Dog extends Animal`, `public class Cat extends Animal`.
+* **Uzasadnienie:** Klasy `Dog` i `Cat` otrzymują wszystkie cechy (id, name, age) po klasie `Animal`, realizując relację "jest rodzajem" (IS-A). Dzięki temu unikamy duplikacji kodu dla każdej rasy.
+
+### Polimorfizm
+* **Gdzie:** Metoda `interact()` wywoływana w pętli w klasie `Shelter` (metoda `showAnimals`).
+* **Uzasadnienie:** Mimo że lista przechowuje typ `Animal`, wywołanie `animal.interact()` skutkuje wykonaniem różnych wersji kodu (szczekanie dla psa, mruczenie dla kota). System jest odporny na rozszerzenia – jeśli dodasz `Bird`, wystarczy, że zaimplementuje `interact()`, a `Shelter` obsłuży to bez zmiany kodu.
+
+## 5. Wykorzystanie narzędzi AI
+Zgodnie z wymogami kursu oświadczam, że podczas tworzenia projektu wspomagałam się modelami AI (LLM). Zakres wsparcia obejmował:
+1. **Burzę mózgów:** Wybór tematu projektu (Schronisko dla zwierząt).
+2. **Weryfikację poprawności:** Konsultacje dotyczące poprawności implementacji interfejsów, metod abstrakcyjnych oraz struktury pakietów w Javie.
+3. **Strukturę dokumentacji:** Pomoc przy formatowaniu i uporządkowaniu treści w pliku README.
+
+**Wkład własny:** Cała logika biznesowa aplikacji, analiza zasad OOP, przygotowanie implementacji oraz finalna weryfikacja zgodności projektu z wymaganiami kursu zostały wykonane przeze mnie. Kod został przeanalizowany pod kątem zrozumienia każdej zastosowanej konstrukcji (enkapsulacja, polimorfizm, dziedziczenie, abstrakcja), co potwierdza merytoryczna zawartość sekcji 4 dokumentacji.
 
 ---
 
