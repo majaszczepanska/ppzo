@@ -1,4 +1,4 @@
-package task3.java;
+package task3.java.shelter;
 
 import java.util.ArrayList;
 import java.util.List;
