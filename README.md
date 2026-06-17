@@ -1,10 +1,11 @@
 # Podstawy programowania zorientowane obiektowo - zadania
 
-Repozytorium zawiera rozwiązania zadań w językach: Python i C#.
+Repozytorium zawiera rozwiązania zadań w językach: Python, C# i Java.
 
 ## Technologie
 * C# (.NET)
 * Python 3
+* Java
 
 ---
 
@@ -39,6 +40,10 @@ W pełni zorientowana obiektowo (OOP) implementacja uproszczonej logiki gry w sz
 
 ## Zestaw 3
 # Projekt: System Zarządzania Schroniskiem
+
+**Rozwiązania:**
+* **Java:** `task3/java/`
+
 
 ## 1. Opis tematu aplikacji
 Aplikacja jest modelem systemu zarządzania wirtualnym schroniskiem dla zwierząt. Głównym celem jest ewidencja zwierząt (psów i kotów), rejestracja osób chętnych do adopcji oraz bezpieczne procesowanie aktu adopcji. System demonstruje mapowanie obiektów świata rzeczywistego na struktury danych.
