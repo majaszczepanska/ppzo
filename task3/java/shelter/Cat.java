@@ -1,6 +1,6 @@
-package task3.java;
+package task3.java.shelter;
 
-public class Cat extends Animal {
+public class Cat extends Animal implements Playable {
 
     public Cat(String name, int age) {
         super(name, age);
@@ -9,5 +9,10 @@ public class Cat extends Animal {
     @Override
     public void interact() {
         System.out.println("Cat " + getName() + " rubs against your legs and purrs loudly.");
+    }
+
+    @Override
+    public void play() {
+        System.out.println(getName() + " is chasing a laser pointer!");
     }
 }
