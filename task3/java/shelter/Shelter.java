@@ -14,6 +14,13 @@ public class Shelter {
         availableAnimals.add(animal);
         System.out.println("Added to shelter: " + animal.getName());
     }
+    
+    public void removeAnimal(Animal animal) {
+        availableAnimals.remove(animal);
+    }
+    public boolean hasAnimal(Animal animal) {
+        return availableAnimals.contains(animal);
+    }
 
     public void showAnimals() {
         System.out.println("\n--- Animals in the shelter ---");
